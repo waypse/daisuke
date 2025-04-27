@@ -10,3 +10,8 @@
  * This representation is used in the FFT (Fast Fourier Transform) algorithm
  */
 export type Complex = [number, number]; // [real, imaginary]
+
+export type Couple = {
+	anchorTime: number;
+	songId: number;
+};
