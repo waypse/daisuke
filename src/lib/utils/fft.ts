@@ -1,5 +1,5 @@
 import type { Complex } from '$lib/types';
-import { ComplexOperations } from './complex';
+import { ComplexOperations } from '$lib/utils';
 
 export class FFTProcessor {
 	/**

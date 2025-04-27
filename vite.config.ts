@@ -1,6 +1,7 @@
-import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import { sveltekit } from '@sveltejs/kit/vite';
+import socketPlugin from './src/lib/server/sockets/vite-plugin';
 
 export default defineConfig({
-	plugins: [sveltekit()]
+	plugins: [sveltekit(), socketPlugin()]
 });
