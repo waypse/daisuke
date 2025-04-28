@@ -15,3 +15,14 @@ export type Couple = {
 	anchorTime: number;
 	songId: number;
 };
+
+export type Peak = {
+	time: number;
+	frequency: Complex;
+};
+
+export type Maxies = {
+	maxMag: number;
+	maxFreq: Complex;
+	freqIdx: number;
+};
