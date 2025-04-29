@@ -185,15 +185,16 @@ const extractPeaks = (
 		// Add peaks that exceed the average magnitude
 		for (let i = 0; i < maxValues.length; i++) {
 			const { maxMag, maxFreq, freqIdx } = maxValues[i];
-			if (maxMag > avgMagnitude) {
-				const peakTimeInBin = (freqIdx * binDuration) / bin.length;
-				const peakTime = binIdx * binDuration + peakTimeInBin;
 
-				peaks.push({
-					time: peakTime,
-					frequency: maxFreq
-				});
-			}
+			if (maxMag < avgMagnitude) continue;
+
+			const peakTimeInBin = (freqIdx * binDuration) / bin.length;
+			const peakTime = binIdx * binDuration + peakTimeInBin;
+
+			peaks.push({
+				time: peakTime,
+				frequency: maxFreq
+			});
 		}
 	}
 
