@@ -4,7 +4,7 @@ import { ComplexOperations, FFTProcessor } from '$lib/utils';
 const DSP_RATIO = 4;
 const FREQ_BIN_SIZE = 1024;
 const MAX_FREQ = 5000.0; // 5kHz
-const HOP_SIZE = FREQ_BIN_SIZE / 32;
+const HOP_SIZE = 32;
 const BANDS = [
 	{ min: 0, max: 10 },
 	{ min: 10, max: 20 },
@@ -15,7 +15,7 @@ const BANDS = [
 ];
 
 /**
- * hammingWindow generates a Hamming window of the specified size.
+ * getHammingWindow generates a Hamming window of the specified size.
  *
  * The Hamming window is defined as:
  *
@@ -25,7 +25,7 @@ const BANDS = [
  *
  * @returns The generated Hamming window as an array of numbers.
  */
-const hammingWindow = (): number[] =>
+const getHammingWindow = (): number[] =>
 	Array.from(
 		{ length: FREQ_BIN_SIZE },
 		(_, i) => 0.54 - 0.46 * Math.cos((2 * Math.PI * i) / (FREQ_BIN_SIZE - 1))
@@ -41,7 +41,7 @@ const hammingWindow = (): number[] =>
  * @param input  - The input signal to filter.
  * @returns  The filtered signal.
  */
-const lowPassFilter = (sampleRate: number, input: number[]): number[] => {
+const lowPassFilter = (input: number[], sampleRate: number): number[] => {
 	const rc = 1.0 / (2 * Math.PI * MAX_FREQ);
 	const dt = 1.0 / sampleRate;
 	const alpha = dt / (rc + dt);
@@ -49,13 +49,13 @@ const lowPassFilter = (sampleRate: number, input: number[]): number[] => {
 	const filteredSignal: number[] = new Array(input.length);
 	let prevOutput = 0;
 
-	for (let i = 0; i < input.length; i++) {
-		if (i === 0) {
-			filteredSignal[i] = input[i] * alpha;
-		} else {
-			filteredSignal[i] = alpha * input[i] + (1 - alpha) * prevOutput;
-		}
-		prevOutput = filteredSignal[i];
+	for (let idx = 0; idx < input.length; idx++) {
+		filteredSignal[idx] =
+			idx === 0
+				? input[idx] * alpha
+				: alpha * input[idx] + (1 - alpha) * prevOutput;
+
+		prevOutput = filteredSignal[idx];
 	}
 	return filteredSignal;
 };
@@ -112,7 +112,7 @@ const downSample = (
  */
 const getSpectrogram = (samples: number[], sampleRate: number): Complex[][] => {
 	// Step 1: Apply low-pass filter to remove frequencies above MAX_FREQ
-	const filteredSample = lowPassFilter(sampleRate, samples);
+	const filteredSample = lowPassFilter(samples, sampleRate);
 
 	// Step 2: Down sample the filtered signal to reduce the sample rate
 	// 4x down sampling
@@ -127,9 +127,8 @@ const getSpectrogram = (samples: number[], sampleRate: number): Complex[][] => {
 	const numOfWindows = Math.floor(
 		downSampledSample.length / (FREQ_BIN_SIZE - HOP_SIZE)
 	);
-	const spectrogram: Complex[][] = [];
-
-	const window = hammingWindow();
+	const hammingWindow = getHammingWindow();
+	const spectrogram = new Array<Complex[]>(numOfWindows);
 
 	// Step 4: Perform Short-Time Fourier Transform (STFT) over the signal
 	for (let i = 0; i < numOfWindows; i++) {
@@ -138,11 +137,10 @@ const getSpectrogram = (samples: number[], sampleRate: number): Complex[][] => {
 		const bin = new Array<number>(FREQ_BIN_SIZE).fill(0);
 
 		for (let j = start; j < end; j++) {
-			bin[j - start] = downSampledSample[j] * window[j - start];
+			bin[j - start] = downSampledSample[j] * hammingWindow[j - start];
 		}
 
-		const spectrum = FFTProcessor.transform(bin);
-		spectrogram.push(spectrum);
+		spectrogram[i] = FFTProcessor.transform(bin);
 	}
 
 	return spectrogram;
@@ -155,7 +153,7 @@ const extractPeaks = (
 ): Peak[] => {
 	if (spectrogram.length < 1) return [];
 
-	const peaks: Peak[] = [];
+	const peaks = new Array<Peak>();
 	const binDuration = audioDuration / spectrogram.length;
 
 	for (let binIdx = 0; binIdx < spectrogram.length; binIdx++) {
