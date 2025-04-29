@@ -1,4 +1,4 @@
-import type { Complex, Peak, Maxies } from '$lib/types';
+import type { Complex, Peak } from '$lib/types';
 import { ComplexOperations, FFTProcessor } from '$lib/utils';
 
 const DSP_RATIO = 4;
@@ -33,9 +33,9 @@ const hammingWindow = (): number[] =>
 
 /**
  * lowPassFilter is a first-order low-pass filter that attenuates high
- *  frequencies above the cutoffFrequency.
+ * frequencies above the cutoffFrequency.
  *
- *  It uses the transfer function H(s) = 1 / (1 + sRC), where RC is the time constant.
+ * It uses the transfer function H(s) = 1 / (1 + sRC), where RC is the time constant.
  *
  * @param sampleRate - The sample rate of the input signal.
  * @param input  - The input signal to filter.
@@ -61,15 +61,15 @@ const lowPassFilter = (sampleRate: number, input: number[]): number[] => {
 };
 
 /**
- * downsample reduces the sample rate of the input signal by averaging
- *  samples in blocks of size ratio.
+ * downSample reduces the sample rate of the input signal by averaging
+ * samples in blocks of size ratio.
  *
- * @param input - The input signal to downsample.
+ * @param input - The input signal to down sample.
  * @param originalSampleRate - The original sample rate of the input signal.
- * @param targetSampleRate - The desired sample rate after downsampling.
- * @returns The downsampled signal.
+ * @param targetSampleRate - The desired sample rate after down sampling.
+ * @returns The down sampled signal.
  */
-const downsample = (
+const downSample = (
 	input: number[],
 	originalSampleRate: number,
 	targetSampleRate: number
@@ -114,9 +114,9 @@ const getSpectrogram = (samples: number[], sampleRate: number): Complex[][] => {
 	// Step 1: Apply low-pass filter to remove frequencies above MAX_FREQ
 	const filteredSample = lowPassFilter(sampleRate, samples);
 
-	// Step 2: Downsample the filtered signal to reduce the sample rate
-	// 4x downsampling
-	const downsampledSample = downsample(
+	// Step 2: Down sample the filtered signal to reduce the sample rate
+	// 4x down sampling
+	const downSampledSample = downSample(
 		filteredSample,
 		sampleRate,
 		sampleRate / DSP_RATIO
@@ -125,7 +125,7 @@ const getSpectrogram = (samples: number[], sampleRate: number): Complex[][] => {
 	// Step 3: Calculate the number of windows for STFT
 	// 1024 samples per window, 32 windows per hop
 	const numOfWindows = Math.floor(
-		downsampledSample.length / (FREQ_BIN_SIZE - HOP_SIZE)
+		downSampledSample.length / (FREQ_BIN_SIZE - HOP_SIZE)
 	);
 	const spectrogram: Complex[][] = [];
 
@@ -134,11 +134,11 @@ const getSpectrogram = (samples: number[], sampleRate: number): Complex[][] => {
 	// Step 4: Perform Short-Time Fourier Transform (STFT) over the signal
 	for (let i = 0; i < numOfWindows; i++) {
 		const start = i * HOP_SIZE;
-		const end = Math.min(start + FREQ_BIN_SIZE, downsampledSample.length);
+		const end = Math.min(start + FREQ_BIN_SIZE, downSampledSample.length);
 		const bin = new Array<number>(FREQ_BIN_SIZE).fill(0);
 
 		for (let j = start; j < end; j++) {
-			bin[j - start] = downsampledSample[j] * window[j - start];
+			bin[j - start] = downSampledSample[j] * window[j - start];
 		}
 
 		const spectrum = FFTProcessor.transform(bin);
@@ -162,13 +162,13 @@ const extractPeaks = (
 		const bin = spectrogram[binIdx];
 		let maxMagSum = 0;
 
-		const maxies: Maxies[] = BANDS.map((band) => {
+		const maxValues = BANDS.map((band) => {
 			let maxMag = 0;
-			let maxFreq: Complex = [0, 0]; // [real, imaginary]
+			let maxFreq: Complex = [0, 0];
 			let freqIdx = band.min;
 
 			for (let idx = band.min; idx < band.max && idx < bin.length; idx++) {
-				const magnitude = ComplexOperations.abs(bin[idx]); // Magnitude of complex number
+				const magnitude = ComplexOperations.abs(bin[idx]);
 
 				if (magnitude > maxMag) {
 					maxMag = magnitude;
@@ -185,8 +185,8 @@ const extractPeaks = (
 		const avgMagnitude = maxMagSum / BANDS.length;
 
 		// Add peaks that exceed the average magnitude
-		for (let i = 0; i < maxies.length; i++) {
-			const { maxMag, maxFreq, freqIdx } = maxies[i];
+		for (let i = 0; i < maxValues.length; i++) {
+			const { maxMag, maxFreq, freqIdx } = maxValues[i];
 			if (maxMag > avgMagnitude) {
 				const peakTimeInBin = (freqIdx * binDuration) / bin.length;
 				const peakTime = binIdx * binDuration + peakTimeInBin;

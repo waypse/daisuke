@@ -6,9 +6,7 @@ export class ComplexOperations {
 	 *
 	 * (a + bi) + (c + di) = (a + c) + (b + d)i
 	 */
-	static add(a: Complex, b: Complex): Complex {
-		const [realA, imagA] = a;
-		const [realB, imagB] = b;
+	static add([realA, imagA]: Complex, [realB, imagB]: Complex): Complex {
 		return [realA + realB, imagA + imagB];
 	}
 
@@ -17,9 +15,7 @@ export class ComplexOperations {
 	 *
 	 * (a + bi) - (c + di) = (a - c) + (b - d)i
 	 */
-	static sub(a: Complex, b: Complex): Complex {
-		const [realA, imagA] = a;
-		const [realB, imagB] = b;
+	static sub([realA, imagA]: Complex, [realB, imagB]: Complex): Complex {
 		return [realA - realB, imagA - imagB];
 	}
 
@@ -28,9 +24,7 @@ export class ComplexOperations {
 	 *
 	 * (a + bi)(c + di) = (ac - bd) + (ad + bc)i
 	 */
-	static mul(a: Complex, b: Complex): Complex {
-		const [realA, imagA] = a;
-		const [realB, imagB] = b;
+	static mul([realA, imagA]: Complex, [realB, imagB]: Complex): Complex {
 		// prettier-ignore
 		return [
 			realA * realB - imagA * imagB,
@@ -43,8 +37,7 @@ export class ComplexOperations {
 	 *
 	 * |a + bi| = sqrt(a^2 + b^2)
 	 */
-	static abs(a: Complex): number {
-		const [real, imag] = a;
+	static abs([real, imag]: Complex): number {
 		return Math.sqrt(real ** 2 + imag ** 2);
 	}
 }
