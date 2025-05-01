@@ -23,6 +23,7 @@ services:
       - ./svelte-kit/src:/app/src
       - ./svelte-kit/vite.config.ts:/app/vite.config.ts
       - ./svelte-kit/svelte.config.js:/app/svelte.config.js
+      - ./svelte-kit/.svelte-kit:/app/.svelte-kit
       - ./svelte-kit/static:/app/static
     environment:
       ENV: ${ENV}

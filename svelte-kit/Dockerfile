@@ -9,11 +9,11 @@ RUN pnpm install
 # === Development Stage ===
 FROM base AS dev
 EXPOSE 5173
-CMD ["pnpm", "run", "dev"]
+CMD ["pnpm", "run", "dev", "--", "--host"]
 
 
 # === Production Stage ===
 FROM base AS prod
 RUN pnpm run build
 EXPOSE 5173
-CMD ["pnpm","run", "preview"]
+CMD ["pnpm","run", "preview", "--", "--host"]
