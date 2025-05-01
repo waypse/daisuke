@@ -11,8 +11,11 @@ export default defineConfig({
 		host: '0.0.0.0',
 		port: 5173,
 		strictPort: true,
-		hmr: {
-			clientPort: 5173
+		// forced measures to make hmr work in docker
+		// TODO: find a workaround without polling
+		watch: {
+			usePolling: true,
+			interval: 1000
 		}
 	}
 });
