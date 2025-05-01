@@ -1,0 +1,31 @@
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      target: ${ENV:-dev}
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server/src:/app/src
+      - ./server/shazamdb.sqlite:/app/shazamdb.sqlite
+    environment:
+      ENV: ${ENV}
+
+  svelte-kit:
+    build:
+      context: ./svelte-kit
+      dockerfile: Dockerfile
+      target: ${ENV:-dev}
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./svelte-kit/src:/app/src
+      - ./svelte-kit/vite.config.ts:/app/vite.config.ts
+      - ./svelte-kit/svelte.config.js:/app/svelte.config.js
+      - ./svelte-kit/static:/app/static
+    environment:
+      ENV: ${ENV}
+      CLIENT_API_PATH: /api
+      SERVER_API_PATH: http://server:3000/api
+      SERVER_URL: http://svelte-kit:5173

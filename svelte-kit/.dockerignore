@@ -1,0 +1,12 @@
+README.md
+dist
+Dockerfile
+node_modules
+.git
+.gitignore
+.prettierrc
+.prettierignore
+.npmrc
+.pnpm-store
+.env.example
+.env
