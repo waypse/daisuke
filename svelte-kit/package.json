@@ -20,12 +20,9 @@
 		"@ffmpeg/ffmpeg": "^0.12.15",
 		"@ffmpeg/util": "^0.12.2",
 		"@sveltejs/adapter-auto": "^6.0.0",
-		"@sveltejs/adapter-node": "^5.2.12",
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
-		"@types/better-sqlite3": "^7.6.12",
 		"@types/node": "^22",
-		"drizzle-kit": "^0.30.2",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
 		"svelte": "^5.0.0",
@@ -35,8 +32,6 @@
 	},
 	"dependencies": {
 		"audio-decode": "^2.2.2",
-		"better-sqlite3": "^11.8.0",
-		"drizzle-orm": "^0.40.0",
 		"socket.io": "^4.8.1",
 		"socket.io-client": "^4.8.1"
 	}
