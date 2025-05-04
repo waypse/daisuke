@@ -1,0 +1,101 @@
+/* Basic CSS Reset */
+
+/* Remove default margin and padding */
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* Remove list styling */
+ul,
+ol {
+	list-style: none;
+}
+
+/* Remove link styles */
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+/* Remove table border spacing */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* Set a default font */
+body {
+	line-height: 1.5;
+	background-color: #f4f4f4; /* Light grey background */
+	color: #333; /* Dark grey text for readability */
+}
+
+/* Remove default fieldset border */
+fieldset {
+	border: none;
+	padding: 0;
+}
+
+/* Remove default border around images */
+img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+/* Reset form controls */
+input,
+textarea,
+select,
+button {
+	font: inherit;
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+	background: none;
+}
+
+/* Remove default button styles */
+button {
+	cursor: pointer;
+}
+
+/* Headings styles */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: bold;
+	margin-bottom: 0.5rem;
+}
+
+h1 {
+	font-size: 2.5rem;
+}
+
+h2 {
+	font-size: 2rem;
+}
+
+h3 {
+	font-size: 1.75rem;
+}
+
+h4 {
+	font-size: 1.5rem;
+}
+
+h5 {
+	font-size: 1.25rem;
+}
+
+h6 {
+	font-size: 1rem;
+}
