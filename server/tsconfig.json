@@ -17,11 +17,5 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
-  },
-  // Needed on Windows to avoid issues with file watching
-  "watchOptions": {
-    "watchFile": "dynamicPriorityPolling",
-    "watchDirectory": "dynamicPriorityPolling",
-    "excludeDirectories": ["**/node_modules", "/dist"]
   }
 }
