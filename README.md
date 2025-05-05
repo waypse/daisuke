@@ -24,7 +24,12 @@ Song indexing:
 - Copy the .env.example file and replace what needed.
 - dockerfiles are multi-staged and depend on ENV flag inside .env (dev/prod)
 - inside `/server` create a file called `shazamdb.sqlite`
-- `pnpm install` inside both `/server` and `/svelte-kit`
+
+```
+cd server && touch shazamdb.sqlite
+```
+
+- run `pnpm install` inside both `/server` and `/svelte-kit`
 
 ### Executing program
 
