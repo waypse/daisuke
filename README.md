@@ -8,8 +8,8 @@ Song indexing:
 
 - Youtube
 - Spotify
-  Song finding through microphone.
-  Song finding through device audio.
+- Song finding through microphone.
+- Song finding through device audio.
 
 ## Getting Started
 
