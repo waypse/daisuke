@@ -1,14 +1,21 @@
 import {
+  ConnectedSocket,
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
+  WebSocketServer,
 } from '@nestjs/websockets';
+import { Server } from 'http';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: { origin: '*' },
+})
 export class EventsGateway {
+  @WebSocketServer()
+  server: Server;
+
   @SubscribeMessage('audio-data')
-  handleMessage(@MessageBody() audioData: string): void {
+  handleMessage(@MessageBody() audioData: any): void {
     console.log('Received fingerprint:', audioData);
-    // Handle the fingerprint message here
   }
 }

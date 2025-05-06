@@ -2,7 +2,6 @@
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-	const { socket } = data;
 
 	const startRecording = async () => {
 		if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
@@ -22,15 +21,12 @@
 		const audioChunks = new Array<Blob>();
 		mediaRecorder.addEventListener('dataavailable', (event) => {
 			audioChunks.push(event.data);
+			data.socket?.emit('audio-data', event.data);
 		});
 		mediaRecorder.addEventListener('stop', () => {
-			const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-			const audioUrl = URL.createObjectURL(audioBlob);
-			const audio = new Audio(audioUrl);
-			audio.play();
+			console.log('Recording stopped');
 		});
 		mediaRecorder.start();
-		socket?.send('wtf');
 	};
 </script>
 
