@@ -18,4 +18,7 @@
 		min-height: 100vh;
 		background-color: var(--background);
 	}
+	:global(main > *) {
+		color: var(--text);
+	}
 </style>

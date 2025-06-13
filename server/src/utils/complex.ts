@@ -27,9 +27,9 @@ export class ComplexOperations {
   static mul([realA, imagA]: Complex, [realB, imagB]: Complex): Complex {
     // prettier-ignore
     return [
-			realA * realB - imagA * imagB,
-			realA * imagB + imagA * realB
-		];
+      realA * realB - imagA * imagB,
+      realA * imagB + imagA * realB
+    ];
   }
 
   /**

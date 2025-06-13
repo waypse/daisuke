@@ -12,7 +12,7 @@ services:
     environment:
       ENV: ${ENV}
 
-  svelte-kit:
+  client:
     build:
       context: ./svelte-kit
       dockerfile: Dockerfile
@@ -27,6 +27,4 @@ services:
       - ./svelte-kit/static:/app/static
     environment:
       ENV: ${ENV}
-      CLIENT_API_PATH: /api
-      SERVER_API_PATH: http://server:3000/api
-      SERVER_URL: http://svelte-kit:5173
+      SERVER_API: http://server:3000
